@@ -12,6 +12,7 @@ export type ExportFormat = (typeof EXPORT_FORMATS)[number]
 export type CustomizationStatus =
   | "queued"
   | "analyzing"
+  | "review"
   | "tailoring"
   | "scoring"
   | "completed"
@@ -51,6 +52,19 @@ export type JdRequirements = {
   responsibilities: string[]
 }
 
+// Feedback on the ORIGINAL resume, shown before the user clicks "Update resume".
+export type ReviewItem = {
+  section: string
+  issue: string
+  suggestion: string
+  priority: "high" | "medium" | "low"
+}
+
+export type ReviewResult = {
+  verdict: string
+  items: ReviewItem[]
+}
+
 export type CustomizationResult = {
   resume: StructuredResume
   changes: { section: string; description: string }[]
@@ -83,6 +97,15 @@ export type UploadedResume = {
   preview: string
 }
 
+// A resume in the user's library: the upload plus how much it has been used.
+export type ResumeSummary = UploadedResume & {
+  createdAt: string
+  customizationCount: number
+  lastUsedAt: string | null
+}
+
+export type Page<T> = { items: T[]; total: number }
+
 export type CoverLetter = {
   id: string
   tone: Tone
@@ -99,6 +122,7 @@ export type CreateCustomizationBody = {
 
 export type CustomizationSummary = {
   id: string
+  resumeId: string
   status: CustomizationStatus
   role: string
   company: string
@@ -119,6 +143,7 @@ export type CustomizationDetail = {
   resume: UploadedResume
   jobDescription: { content: string; requirements: JdRequirements | null }
   original: StructuredResume | null
+  review: ReviewResult | null
   result: CustomizationResult | null
   scores: Scores | null
   coverLetter: CoverLetter | null

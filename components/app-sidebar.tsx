@@ -15,25 +15,23 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {  TerminalIcon, PlusIcon, HistoryIcon } from "lucide-react"
+import { TerminalIcon, PlusIcon, HistoryIcon, FilesIcon } from "lucide-react"
+import Link from "next/link"
+import { routes } from "@/lib/routes"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "New",
-      url: "/",
+      url: routes.home,
       icon: (
         <PlusIcon />
       ),
-      
+
     },
-   
-    { title: "History", url: "/history", icon: <HistoryIcon /> },
+
+    { title: "Resumes", url: routes.resumes, icon: <FilesIcon /> },
+    { title: "History", url: routes.history, icon: <HistoryIcon /> },
    
   ],
  
@@ -45,7 +43,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<a href="#" />}>
+            <SidebarMenuButton size="lg" render={<Link href={routes.home} />}>
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <TerminalIcon className="size-4" />
               </div>
@@ -63,7 +61,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   )

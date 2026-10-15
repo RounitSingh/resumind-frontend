@@ -128,3 +128,36 @@
     @apply font-sans;
   }
 }
+/* Scrollable but without a visible scrollbar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ===== Scrollbar style =====
+   Edit this block to restyle the scrollbar of every element that has the `app-scrollbar` class
+   (currently the resume list on the New page). Colours follow the light/dark theme.
+   Chrome 121+, Edge and Firefox use scrollbar-width / scrollbar-color; older Chrome and Safari
+   use the ::-webkit-scrollbar rules, so change both. */
+.app-scrollbar {
+  scrollbar-width: thin; /* auto | thin | none */
+  scrollbar-color: color-mix(in oklab, var(--muted-foreground) 60%, transparent) transparent; /* thumb track */
+}
+.app-scrollbar::-webkit-scrollbar {
+  width: 3px; /* thickness */
+}
+.app-scrollbar::-webkit-scrollbar-button {
+  display: none; /* no arrow heads */
+}
+.app-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-scrollbar::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--muted-foreground) 60%, transparent);
+  border-radius: 9999px; /* fully rounded */
+}
+.app-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}

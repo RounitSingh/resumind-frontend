@@ -1,11 +1,12 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppShell } from "@/components/app-shell";
+import { AuthGate } from "@/components/auth-gate";
+import { QueryProvider } from "@/components/query-provider";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -33,13 +34,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <SiteHeader />
-              {children}
-            </SidebarInset>
-          </SidebarProvider>
+          {/* usePathname() in the auth gate and shell needs a Suspense boundary on dynamic routes */}
+          <Suspense fallback={null}>
+            <QueryProvider>
+              <AuthGate>
+                <AppShell>{children}</AppShell>
+              </AuthGate>
+            </QueryProvider>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>

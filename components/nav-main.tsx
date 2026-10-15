@@ -20,6 +20,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { ChevronRightIcon } from "lucide-react"
+import { routes } from "@/lib/routes"
+import { useWorkspaceStore } from "@/store/workspace-store"
 
 export function NavMain({
   items,
@@ -48,8 +50,19 @@ export function NavMain({
           >
             <SidebarMenuButton
               tooltip={item.title}
-              isActive={pathname === item.url}
-              render={<Link href={item.url} />}
+              isActive={
+                item.url === routes.home
+                  ? pathname === routes.home
+                  : pathname.startsWith(item.url)
+              }
+              render={
+                <Link
+                  href={item.url}
+                  onClick={() => {
+                    if (item.url === routes.home) useWorkspaceStore.getState().reset()
+                  }}
+                />
+              }
             >
               {item.icon}
               <span>{item.title}</span>

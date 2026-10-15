@@ -6,7 +6,7 @@ export function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-// Downloads go through fetch + blob (the request needs X-Client-Id), so the
+// Downloads go through axios as a blob (the request needs the auth token), so the
 // browser needs a temporary anchor to save the result.
 export function saveBlob(blob: Blob, fileName: string) {
   const url = URL.createObjectURL(blob)

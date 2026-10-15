@@ -8,7 +8,7 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query"
 
-import { api, ApiError } from "@/lib/api"
+import { api, isApiError } from "@/lib/api"
 import type { CustomizationDetail, ExportFormat, Page, Tone } from "@/lib/types"
 
 const PAGE_SIZE = 24
@@ -98,7 +98,7 @@ export const useCustomization = (id: string | null) =>
       return status && RESTING.has(status) ? false : 1500
     },
     // keep retrying network blips; anything else is a real answer (404, 500...)
-    retry: (_n, e) => e instanceof ApiError && e.status === 0,
+    retry: (_n, e) => isApiError(e) && e.status === 0,
     retryDelay: 3000,
   })
 

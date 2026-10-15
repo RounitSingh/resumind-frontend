@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-import { ApiError, authApi, type AuthResponse, type AuthUser } from "@/lib/api"
+import { isApiError, authApi, type AuthResponse, type AuthUser } from "@/lib/api"
 import { queryClient } from "@/lib/query-client"
 import { useWorkspaceStore } from "@/store/workspace-store"
 
@@ -58,7 +58,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
           return r.accessToken
         })
         .catch((e) => {
-          if (e instanceof ApiError && e.status === 0) throw e // offline: don't sign out
+          if (isApiError(e) && e.status === 0) throw e // offline: don't sign out
           set({ accessToken: null })
           return null
         })

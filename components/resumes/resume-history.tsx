@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { buttonVariants } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useResume } from "@/hooks/use-api"
-import { ApiError, getErrorMessage } from "@/lib/api"
+import { isApiError, getErrorMessage } from "@/lib/api"
 import { routes } from "@/lib/routes"
 
 // One resume and every version made from it.
@@ -17,7 +17,7 @@ export function ResumeHistory({ id }: { id: string }) {
 
   if (isPending) return <Skeleton className="h-24 rounded-xl" aria-busy="true" />
 
-  const missing = error instanceof ApiError && error.status === 404
+  const missing = isApiError(error) && error.status === 404
   if (!resume) {
     return (
       <Alert variant="destructive">

@@ -2,17 +2,13 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { SparklesIcon } from "lucide-react"
 
 import { AuthSidePanel } from "@/components/auth-side-panel"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { getErrorMessage } from "@/lib/api"
@@ -44,13 +40,21 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
+      <Card className="overflow-hidden border-border/60 p-0 shadow-xl shadow-black/10">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={onSubmit}>
-            <FieldGroup>
-              <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
-                <p className="text-balance text-muted-foreground">
+          <form
+            className="flex flex-col justify-center px-6 py-8 sm:px-10"
+            onSubmit={onSubmit}
+          >
+            <FieldGroup className="gap-4">
+              <div className="flex flex-col gap-1.5">
+                <div className="mb-2 flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <SparklesIcon className="size-4" />
+                </div>
+                <h1 className="text-2xl font-semibold tracking-tight">
+                  Welcome back
+                </h1>
+                <p className="text-sm text-muted-foreground">
                   Log in to tailor your resume
                 </p>
               </div>
@@ -59,44 +63,51 @@ export function LoginForm({
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <Field>
+              <Field className="gap-1.5">
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   autoComplete="email"
                   placeholder="m@example.com"
+                  className="h-10"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Field>
-              <Field>
+              <Field className="gap-1.5">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Input
                   id="password"
                   type="password"
                   autoComplete="current-password"
+                  className="h-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </Field>
-              <Field>
-                <Button type="submit" disabled={pending}>
-                  {pending && <Spinner />}
-                  Log in
-                </Button>
-              </Field>
-              <FieldDescription className="text-center">
-                Don&apos;t have an account? <Link href={routes.signup}>Sign up</Link>
-              </FieldDescription>
+              <Button
+                type="submit"
+                className="mt-1 h-10 w-full"
+                disabled={pending}
+              >
+                {pending && <Spinner />}
+                Log in
+              </Button>
+              <p className="text-center text-sm text-muted-foreground">
+                Don&apos;t have an account?{" "}
+                <Link
+                  href={routes.signup}
+                  className="font-medium text-foreground underline-offset-4 hover:underline"
+                >
+                  Sign up
+                </Link>
+              </p>
             </FieldGroup>
           </form>
-          <AuthSidePanel
-            title="Resume Tailor"
-            text="Match your resume to any job description in minutes."
-          />
+          <AuthSidePanel alt="Resume Tailor" />
         </CardContent>
       </Card>
     </div>
